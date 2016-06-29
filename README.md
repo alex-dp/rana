@@ -4,23 +4,18 @@ Welcome to Rana, the project to give SGML a better look.
 
 The syntax looks a lot more like C than markup:
 
-<code>nest(){
-
-	egg(age="2d"){}
-
-	bird(){}
-
-}</code>
+<code>nest(){<br>
+	egg(age="2d"){}<br>
+	bird(){}<br>
+}
+</code>
 
 becomes:
 
 <code>
-&lt;nest&gt;  
-  
-	&lt;egg age="2d"&gt;&lt;/egg&gt;  
-  
-	&lt;bird&gt;&lt;/bird&gt;  
-
+&lt;nest&gt;<br>
+	&lt;egg age="2d"&gt;&lt;/egg&gt;<br>
+	&lt;bird&gt;&lt;/bird&gt;<br>
 &lt;/nest&gt;
 </code>
 
