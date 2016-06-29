@@ -14,13 +14,15 @@ The syntax looks a lot more like C than markup:
 
 becomes:
 
-<code>&lt;nest&gt;
+<code>
+&lt;nest&gt;  
+  
+	&lt;egg age="2d"&gt;&lt;/egg&gt;  
+  
+	&lt;bird&gt;&lt;/bird&gt;  
 
-	&lt;egg age="2d"&gt;&lt;/egg&gt;
-
-	&lt;bird&gt;&lt;/bird&gt;
-	
-&lt;/nest&gt;</code>
+&lt;/nest&gt;
+</code>
 
 () and {} are mandatory, but that will change.
 
