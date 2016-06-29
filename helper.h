@@ -57,6 +57,6 @@ bool is_markup(string in) {
 }
 
 bool is_escaped(vector<unsigned char> v, int p) {
-	if (v.at(p - 1) != '\\') return false;
-	else return is_escaped(v, p - 1);
+	if (p == 0 || v.at(p - 1) != '\\') return false;
+	else return !is_escaped(v, p - 1);
 }

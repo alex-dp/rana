@@ -105,10 +105,8 @@ int main (int argc, char** argv){
 					mode = EXPECT_CONTENT;
 					break;
 				case '"':
-					if (!is_escaped(v, i)) {
-						mode = mode == ARGUMENTS ?
-							ARGUMENTS : QUOTING_INGORE_QUOTES;
-					}
+					if (!is_escaped(v, i) && mode != ARGUMENTS)
+						mode = QUOTING_INGORE_QUOTES;
 					break;
 				case ' ':
 				case '\n':
@@ -123,9 +121,9 @@ int main (int argc, char** argv){
 
 			switch (mode) {
 				case ARGUMENTS:
-					if (v.at(i) == '(' && !quoting)
+					if (v.at(i) == '(' && !quoting && v.at(i + 1) != ')')
 						fprintf(out, " ");
-					else fprintf(out, "%c", v.at(i));
+					else if (v.at(i) != '(') fprintf(out, "%c", v.at(i));
 					if (v.at(i) == '"' && !is_escaped(v, i))
 						quoting = !quoting;
 					break;
@@ -155,16 +153,17 @@ int main (int argc, char** argv){
 					i--;
 					break;
 				case QUOTING_INGORE_QUOTES:
-					if (v.at(i) != '"')
+					i++;
+					while ((v.at(i) == '"' && is_escaped(v, i)) || v.at(i) != '"') {
 						fprintf(out, "%c", v.at(i));
-					else mode = COPY;
+						i++;
+					}
 					break;
 				case COPY:
 					fprintf(out, "%c", v.at(i));
 					break;
 			}
 		}
-		fprintf(out, "%c", '\n');
 		fclose(out);
 	}
 
