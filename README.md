@@ -18,4 +18,4 @@ becomes:
 
 () and {} are mandatory, but that will change.
 
-to try it out, compile main.cpp and run it with just a `.rn` file as input.
+to try it out, clone this repo and run INSTALL.sh
