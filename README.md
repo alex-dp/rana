@@ -19,3 +19,7 @@ becomes:
 () and {} are mandatory, but that will change.
 
 to try it out, clone this repo and run INSTALL.sh
+
+a markup to rana parser is probably on its way.
+
+Rana is released under the GNU GPLv3, and comes with absolutely no warranty, not even the warranty of fitness for a particular purpose.
