@@ -47,7 +47,7 @@ int main (int argc, char** argv){
 
 				switch (argv[i][1]) {
 					case 'v':
-						cout << version << '\n';
+						cout << VERSION << '\n';
 						return 0;
 
 					default:
@@ -65,11 +65,11 @@ int main (int argc, char** argv){
 	}
 
 	if (outfile == "\0"){		//if no out is given
-		if (has_suffix(infile, '.' + ext))		//if it's a {productname} file
+		if (has_suffix(infile, '.' + EXT))		//if it's a {productname} file
 			outfile = split(infile, '.')[0] + (o_ext == "\0" ? ".html" : ('.' + o_ext));
 
 		else if (is_markup(infile))				//if it's *ml
-			outfile = split(infile, '.')[0] + '.' + ext;
+			outfile = split(infile, '.')[0] + '.' + EXT;
 
 		else {
 			cout << help();
@@ -78,9 +78,8 @@ int main (int argc, char** argv){
 	}
 
 	//load input into a vector
-	std::vector<unsigned char> v;
-	if (FILE *fp = fopen(infile.c_str(), "r"))
-	{
+	vector<unsigned char> v;
+	if (FILE *fp = fopen(infile.c_str(), "r")) {
 		char buf[1024];
 		while (size_t len = fread(buf, 1, sizeof(buf), fp))
 			v.insert(v.end(), buf, buf + len);
@@ -88,8 +87,7 @@ int main (int argc, char** argv){
 	}
 
 	//open the output file, parse the input and write to output
-	const char *outfile_c = outfile.c_str();
-	if(FILE *out = fopen(outfile_c, "w")) {
+	if(FILE *out = fopen(outfile.c_str(), "w")) {
 		for (int i = 0; i < v.size(); i++) {
 			switch (v.at(i)) {
 				case '(':

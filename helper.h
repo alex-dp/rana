@@ -14,7 +14,8 @@ using namespace std;
 #define QUOTING_INGORE_QUOTES 6		//for just plain text
 #define COPY 7				//everything that's not part of the syntax basipally
 
-string version = "0.0.1", ext = "rn";
+#define VERSION "0.0.1"
+#define EXT "rn"
 
 bool req_arg (char a) {
 	char args[] = {'o', 'e'};
@@ -48,12 +49,7 @@ bool has_suffix(const string &str, const string &suffix) {
 }
 
 bool is_markup(string in) {
-	string exts[4] = {"html", "xml", "htm", "xhtml"};
-	for (int i = 0; i < 4; ++i)
-		if (has_suffix(in, '.' + exts[i]))
-			return true;
-
-	return false;
+	return has_suffix(in, "ml");
 }
 
 bool is_escaped(vector<unsigned char> v, int p) {
