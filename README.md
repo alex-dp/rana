@@ -16,6 +16,8 @@ becomes:
 		<bird></bird>
 	</nest>
 
+you can escape parsing with double quotes (`"`)
+
 () and {} are mandatory, but that will change.
 
 to try it out, clone this repo and run INSTALL.sh
