@@ -7,7 +7,7 @@ all: rana
 rana: rana.o
 %.o: %.cpp helper.h
 
-clean:
+clean: clean-test-results
 	rm -f rana *.o
 .phony: clean
 
@@ -18,3 +18,11 @@ install: rana
 uninstall:
 	rm -f $(INSTALLDIR)/rana
 .phony: uninstall
+
+test: rana
+	sh ./tests/test.sh
+.phony: test
+
+clean-test-results:
+	rm -f ./tests/*.html
+.phony: clean-test-results
