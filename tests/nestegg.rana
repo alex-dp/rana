@@ -1,4 +1,4 @@
-	nest(){
-		egg(age="2d"){}
-		bird(){}
-	}
+nest(){
+	egg(age="2d"){}
+	bird(){}
+}

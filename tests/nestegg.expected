@@ -1,4 +1,4 @@
-	<nest>
-		<egg age="2d"></egg>
-		<bird></bird>
-	</nest>
+<nest>
+	<egg age="2d"></egg>
+	<bird></bird>
+</nest>

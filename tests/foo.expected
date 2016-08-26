@@ -1,0 +1,13 @@
+<foo bar="baz" fizz> 
+	<buzz divisible="5, 3">
+		<fifteen></fifteen>
+		<thirty></thirty>
+		<fortyfive></fortyfive>
+	</buzz>
+
+	<constantinople new="rome" rechristener="constantine">
+		<current name="istanbul">
+			<country name="turkey"></country>
+		</current>
+	</constantinople>
+</foo>
