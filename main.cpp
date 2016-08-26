@@ -50,9 +50,11 @@ int main (int argc, char** argv){
 						cout << VERSION << '\n';
 						return 0;
 
-					default:
 					case 'h':
 						cout << help();
+						return 0;
+						
+					default:
 						return WRONG_OPTION;
 				}
 			}
