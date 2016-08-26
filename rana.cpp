@@ -96,10 +96,10 @@ int main (int argc, char** argv){
 					mode = ARGUMENTS;
 					break;
 				case '{':
-					mode = CONTENT;
+					if (mode != ARGUMENTS) mode = CONTENT;
 					break;
 				case '}':
-					mode = NEXT_TAG;
+					if (mode != ARGUMENTS) mode = NEXT_TAG;
 					break;
 				case ')':
 					mode = EXPECT_CONTENT;
