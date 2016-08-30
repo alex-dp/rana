@@ -154,9 +154,29 @@ int main (int argc, char** argv){
 					break;
 				case QUOTING_INGORE_QUOTES:
 					i++;
-					while ((v.at(i) == '"' && is_escaped(v, i)) || v.at(i) != '"') {
-						fprintf(out, "%c", v.at(i));
-						i++;
+					while (v.at(i) != '"' || (v.at(i) == '"' && is_escaped(v, i))) {
+						if (v.at(i) == '\\') {
+							while (v.at(i) == '\\')
+								i++;
+
+							if (v.at(i) == '"' && is_escaped(v, i)) {
+								fprintf(out, "%c", v.at(i));
+								i++;
+							}
+
+							else {
+								i--;
+								while (v.at(i) == '\\') {
+									if (is_escaped(v, i))
+										fprintf(out, "%c", v.at(i));
+									i++;
+								}
+							}
+						}
+						else {
+							fprintf(out, "%c", v.at(i));
+							i++;
+						}
 					}
 					break;
 				case COPY:
