@@ -53,6 +53,10 @@ int main (int argc, char** argv){
 					case 'h':
 						cout << help();
 						return 0;
+
+					case 'l':
+						cout << license();
+						return 0;
 						
 					default:
 						return WRONG_OPTION;

@@ -27,7 +27,25 @@ bool req_arg (char a) {
 }
 
 const char* help () {
-	return "Rana gives HTML a better syntax.\n\nusage:\nrana [options] <infile>\n\n-o <outfile>\n-e <out_extension>\n-v\tPrint version number and exit\n-h\tPrint this and exit\n";
+	return "Rana gives HTML a better syntax.\n\nusage:\nrana [options] <infile>\n\n-o <outfile>\n-e <out_extension>\n-v\tPrint version number and exit\n-l\tPrint a short version of the license\n-h\tPrint this and exit\n";
+}
+
+const char* license(){
+    return "    Rana: a better syntax for SGML\n\
+    Copyright (C) 2016 DP Development\n\
+    \n\
+    This program is free software: you can redistribute it and/or modify\n\
+    it under the terms of the GNU General Public License as published by\n\
+    the Free Software Foundation, either version 3 of the License, or\n\
+    (at your option) any later version.\n\
+    \n\
+    This program is distributed in the hope that it will be useful,\n\
+    but WITHOUT ANY WARRANTY; without even the implied warranty of\n\
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n\
+    GNU General Public License for more details.\n\
+    \n\
+    You should have received a copy of the GNU General Public License\n\
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.\n\n";
 }
 
 vector<string> split(const std::string &text, char sep) {
