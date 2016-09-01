@@ -1,0 +1,14 @@
+html() {
+	head(){
+		title(){"Demo of a script in Rana"}
+	}
+
+	body() {
+		script() {
+			"
+			var a = \"this demo is working!!\"
+			alert(a)
+			"
+		}
+	}
+}
