@@ -1,4 +1,0 @@
-nest(){
-	egg(age="2d"){}
-	bird(){}
-}

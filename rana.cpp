@@ -8,73 +8,28 @@
 
 using namespace std;
 
-string infile = "\0", outfile = "\0", o_ext = "\0", tag_name = "";
-int ignore = -1, mode = NEW_TAG;
-char argfor = '0';
+string infile = "\0", outfile = "\0", o_ext = "\0";
+int mode = NEW_TAG;
 vector<string> tag_names;
-bool quoting = false;
+
+int parseArgs(int argc, char** argv);
+vector<unsigned char> ftov(string fileName);
 
 int main (int argc, char** argv){
-	for(int i = 1; i < argc; i++) {		//ignore program name
 
-		if (argv[i][0] != '-' && i != ignore) {		//if it's not an opt nor an arg then it's the infile
-			infile = argv[i];
-			ignore = -1;
-		}
+	int res = parseArgs(argc, argv);
+	if (res < 0) return res; 
 
-		else if (argfor != '0') {		//if it's an arg
-			switch (argfor) {			//(what is it for)
-				case 'o':
-					outfile = argv[i];
-					break;
-				case 'e':
-					o_ext = argv[i];
-					break;
-				default:
-					cout << help();
-					return WRONG_OPTION;
-			}
-
-			argfor = '0';				//then the next is not an arg
-		}
-
-		else {							//then it's an option
-
-			if (req_arg(argv[i][1])){	//if opt requires an arg
-				ignore = i + 1;			//the next is it
-				argfor = argv[i][1];	//(keep in mind what for)
-			} else {					//otherwise it's just an option
-
-				switch (argv[i][1]) {
-					case 'v':
-						cout << VERSION << '\n';
-						return 0;
-
-					case 'h':
-						cout << help();
-						return 0;
-
-					case 'l':
-						cout << license();
-						return 0;
-						
-					default:
-						return WRONG_OPTION;
-				}
-			}
-		}
-	}
-
-	if (infile == "\0") {		//if no input file is given
+	if (infile == "\0") {
 		cout << help();
-		return 0;
+		return WRONG_INPUT_FILE;
 	}
 
-	if (outfile == "\0"){		//if no out is given
-		if (has_suffix(infile, '.' + EXT))		//if it's a {productname} file
+	if (outfile == "\0"){
+		if (has_suffix(infile, '.' + EXT))
 			outfile = split(infile, '.')[0] + (o_ext == "\0" ? ".html" : ('.' + o_ext));
 
-		else if (is_markup(infile))				//if it's *ml
+		else if (is_markup(infile))
 			outfile = split(infile, '.')[0] + '.' + EXT;
 
 		else {
@@ -83,17 +38,13 @@ int main (int argc, char** argv){
 		}
 	}
 
-	//load input into a vector
-	vector<unsigned char> v;
-	if (FILE *fp = fopen(infile.c_str(), "r")) {
-		char buf[1024];
-		while (size_t len = fread(buf, 1, sizeof(buf), fp))
-			v.insert(v.end(), buf, buf + len);
-		fclose(fp);
-	}
+	
+	vector<unsigned char> v = ftov(infile);
 
-	//open the output file, parse the input and write to output
-	if(FILE *out = fopen(outfile.c_str(), "w")) {
+	
+	if (FILE *out = fopen(outfile.c_str(), "w")) {
+		string tag_name = "";
+		bool quoting = false;
 		for (int i = 0; i < v.size(); i++) {
 			switch (v.at(i)) {
 				case '(':
@@ -118,7 +69,7 @@ int main (int argc, char** argv){
 					if (mode != ARGUMENTS)
 						mode = COPY;
 					break;
-				default:		//if it does not start a new token
+				default:
 					if (mode != ARGUMENTS)
 						mode = NEW_TAG;
 			}
@@ -135,7 +86,7 @@ int main (int argc, char** argv){
 					mode = COPY;
 					break;
 				case NEXT_TAG:
-					fprintf(out, "%c%c%s%c", '<', '/', tag_names.at(tag_names.size() - 1).c_str(), '>');
+					fprintf(out, "</%s>", tag_names.at(tag_names.size() - 1).c_str());
 					tag_names.pop_back();
 					mode = COPY;
 					break;
@@ -145,14 +96,11 @@ int main (int argc, char** argv){
 					break;
 				case NEW_TAG:
 					tag_name = "";
-					try {
-						while(v.at(i) != '(') {
-							tag_name += v.at(i);
-							i++;
-						}
-					} catch (...) {}
+					for (; v.at(i) != '(' && i < v.size(); i++)
+						tag_name += v.at(i);
+
 					tag_names.push_back(tag_name);
-					fprintf(out, "%c%s", '<', tag_name.c_str());
+					fprintf(out, "<%s", tag_name.c_str());
 					mode = COPY;
 					i--;
 					break;
@@ -160,22 +108,16 @@ int main (int argc, char** argv){
 					i++;
 					while (v.at(i) != '"' || (v.at(i) == '"' && is_escaped(v, i))) {
 						if (v.at(i) == '\\') {
-							while (v.at(i) == '\\')
-								i++;
+							for (; v.at(i) == '\\'; i++);
 
 							if (v.at(i) == '"' && is_escaped(v, i)) {
 								fprintf(out, "%c", v.at(i));
 								i++;
 							}
 
-							else {
-								i--;
-								while (v.at(i) == '\\') {
-									if (is_escaped(v, i))
-										fprintf(out, "%c", v.at(i));
-									i++;
-								}
-							}
+							else
+								for (i--; v.at(i) == '\\'; i++)
+									if (is_escaped(v, i)) fprintf(out, "%c", v.at(i));
 						}
 						else {
 							fprintf(out, "%c", v.at(i));
@@ -189,7 +131,77 @@ int main (int argc, char** argv){
 			}
 		}
 		fclose(out);
+	} else {
+		cout << "unable to write to output. do you have the required permissions?\n";
+		return NO_PERMISSIONS;
 	}
 
 	return 0;
+}
+
+int parseArgs(int argc, char** argv) {
+	int ignore = -1;
+	char argfor = 0;
+	for (int i = 1; i < argc; i++) {
+
+		if (argv[i][0] != '-' && i != ignore) {
+			infile = argv[i];
+			ignore = -1;
+		}
+
+		else if (argfor != '0') {
+			switch (argfor) {
+				case 'o':
+					outfile = argv[i];
+					break;
+				case 'e':
+					o_ext = argv[i];
+					break;
+				default:
+					cout << help();
+					return WRONG_OPTION;
+			}
+
+			argfor = '0';
+		}
+
+		else {
+
+			if (req_arg(argv[i][1])){
+				ignore = i + 1;
+				argfor = argv[i][1];
+			} else {
+
+				switch (argv[i][1]) {
+					case 'v':
+						cout << VERSION << '\n';
+						return 0;
+
+					case 'h':
+						cout << help();
+
+						return 0;
+
+					case 'l':
+						cout << license();
+						return 0;
+						
+					default:
+						return WRONG_OPTION;
+				}
+			}
+		}
+	}
+	return 0;
+}
+
+vector<unsigned char> ftov(string fileName) {
+	vector<unsigned char> tmp;
+	if (FILE *fp = fopen(fileName.c_str(), "r")) {
+		char buf[1024];
+		while (size_t len = fread(buf, 1, sizeof(buf), fp))
+			tmp.insert(tmp.end(), buf, buf + len);
+		fclose(fp);
+	}
+	return tmp;
 }

@@ -3,6 +3,7 @@
 
 using namespace std;
 
+#define NO_PERMISSIONS -3
 #define WRONG_INPUT_FILE -2
 #define WRONG_OPTION -1
 
@@ -15,7 +16,7 @@ using namespace std;
 #define COPY 7				//everything that's not part of the syntax basipally
 
 #define VERSION "0.0.1"
-#define EXT "rn"
+string EXT = "rn";
 
 bool req_arg (char a) {
 	char args[] = {'o', 'e'};
@@ -27,7 +28,14 @@ bool req_arg (char a) {
 }
 
 const char* help () {
-	return "Rana gives HTML a better syntax.\n\nusage:\nrana [options] <infile>\n\n-o <outfile>\n-e <out_extension>\n-v\tPrint version number and exit\n-l\tPrint a short version of the license\n-h\tPrint this and exit\n";
+	return "Rana gives HTML a better syntax.\n\n\
+    usage:\n\
+    rana [options] <infile>\n\n\
+    -o <outfile>\n\
+    -e <out_extension>\n\
+    -v\tPrint version number and exit\n\
+    -l\tPrint a short version of the license\n\
+    -h\tPrint this and exit\n";
 }
 
 const char* license(){
