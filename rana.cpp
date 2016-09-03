@@ -25,9 +25,9 @@ int main (int argc, char** argv){
 		return WRONG_INPUT_FILE;
 	}
 
-	if (outfile == "\0"){
+	if (outfile == "\0") {
 		if (has_suffix(infile, '.' + EXT))
-			outfile = split(infile, '.')[0] + (o_ext == "\0" ? ".html" : ('.' + o_ext));
+			outfile = split(infile, '.')[0] + '.' + (o_ext == "\0" ? "html" : o_ext);
 
 		else if (is_markup(infile))
 			outfile = split(infile, '.')[0] + '.' + EXT;
@@ -37,11 +37,9 @@ int main (int argc, char** argv){
 			return WRONG_INPUT_FILE;
 		}
 	}
-
 	
 	vector<unsigned char> v = ftov(infile);
 
-	
 	if (FILE *out = fopen(outfile.c_str(), "w")) {
 		string tag_name = "";
 		bool quoting = false;
