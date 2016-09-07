@@ -3,7 +3,8 @@
 
 using namespace std;
 
-#define NO_PERMISSIONS -3
+#define NO_PERMISSIONS -4
+#define WRONG_OUTPUT_FILE -3
 #define WRONG_INPUT_FILE -2
 #define WRONG_OPTION -1
 

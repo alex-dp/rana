@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <cstdio>
+#include <cstdlib>
 #include <vector>
 #include "helper.h"
 
@@ -34,7 +35,7 @@ int main (int argc, char** argv){
 
 		else {
 			cout << help();
-			return WRONG_INPUT_FILE;
+			return WRONG_OUTPUT_FILE;
 		}
 	}
 	
@@ -200,6 +201,9 @@ vector<unsigned char> ftov(string fileName) {
 		while (size_t len = fread(buf, 1, sizeof(buf), fp))
 			tmp.insert(tmp.end(), buf, buf + len);
 		fclose(fp);
+	} else {
+		cout << "Unable to open \"" + fileName + "\".\n";
+		exit(WRONG_INPUT_FILE);
 	}
 	return tmp;
 }
