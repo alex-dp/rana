@@ -1,6 +1,5 @@
 /*Rana: a better syntax to markup*/
 
-#include <iostream>
 #include <string>
 #include <cstdio>
 #include <cstdlib>
@@ -19,10 +18,13 @@ vector<unsigned char> ftov(string fileName);
 int main (int argc, char** argv){
 
 	int res = parseArgs(argc, argv);
-	if (res < 0) return res; 
+	if (res < 0){
+		printf(help());
+		return res;
+	}
 
 	if (infile == "\0") {
-		cout << help();
+		printf(help());
 		return WRONG_INPUT_FILE;
 	}
 
@@ -34,7 +36,7 @@ int main (int argc, char** argv){
 			outfile = split(infile, '.')[0] + '.' + EXT;
 
 		else {
-			cout << help();
+			printf(help());
 			return WRONG_OUTPUT_FILE;
 		}
 	}
@@ -131,7 +133,7 @@ int main (int argc, char** argv){
 		}
 		fclose(out);
 	} else {
-		cout << "unable to write to output. do you have the required permissions?\n";
+		printf("unable to write to output. do you have the required permissions?\n");
 		return NO_PERMISSIONS;
 	}
 
@@ -140,7 +142,7 @@ int main (int argc, char** argv){
 
 int parseArgs(int argc, char** argv) {
 	int ignore = -1;
-	char argfor = 0;
+	char argfor = '\0';
 	for (int i = 1; i < argc; i++) {
 
 		if (argv[i][0] != '-' && i != ignore) {
@@ -148,7 +150,7 @@ int parseArgs(int argc, char** argv) {
 			ignore = -1;
 		}
 
-		else if (argfor != '0') {
+		else if (argfor != '\0') {
 			switch (argfor) {
 				case 'o':
 					outfile = argv[i];
@@ -157,11 +159,10 @@ int parseArgs(int argc, char** argv) {
 					o_ext = argv[i];
 					break;
 				default:
-					cout << help();
 					return WRONG_OPTION;
 			}
 
-			argfor = '0';
+			argfor = '\0';
 		}
 
 		else {
@@ -173,16 +174,16 @@ int parseArgs(int argc, char** argv) {
 
 				switch (argv[i][1]) {
 					case 'v':
-						cout << VERSION << '\n';
+						printf("%s\n", VERSION);
 						return 0;
 
 					case 'h':
-						cout << help();
+						printf(help());
 
 						return 0;
 
 					case 'l':
-						cout << license();
+						printf(license());
 						return 0;
 						
 					default:
@@ -202,7 +203,7 @@ vector<unsigned char> ftov(string fileName) {
 			tmp.insert(tmp.end(), buf, buf + len);
 		fclose(fp);
 	} else {
-		cout << "Unable to open \"" + fileName + "\".\n";
+		printf("Unable to open \"%s\".\n", fileName.c_str());
 		exit(WRONG_INPUT_FILE);
 	}
 	return tmp;

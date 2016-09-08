@@ -22,7 +22,7 @@ string EXT = "rn";
 bool req_arg (char a) {
 	char args[] = {'o', 'e'};
 
-	for (int i = 0; i < sizeof args; ++i)
+	for (int i = 0; i < 2; i++)
 		if (a == args[i]) return true;
 
 	return false;
