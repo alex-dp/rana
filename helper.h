@@ -29,7 +29,8 @@ bool req_arg (char a) {
 }
 
 const char* help () {
-	return "Rana gives HTML a better syntax.\n\n\
+	return "\
+    Rana gives HTML a better syntax.\n\n\
     usage:\n\
     rana [options] <infile>\n\n\
     -o <outfile>\n\
@@ -57,7 +58,7 @@ const char* license(){
     along with this program.  If not, see <http://www.gnu.org/licenses/>.\n\n";
 }
 
-vector<string> split(const std::string &text, char sep) {
+vector<string> split(const string &text, char sep) {
     vector<string> tokens;
     size_t start = 0, end = 0;
     while ((end = text.find(sep, start)) != string::npos) {
@@ -80,6 +81,5 @@ bool is_markup(string in) {
 }
 
 bool is_escaped(vector<unsigned char> v, int p) {
-	if (p == 0 || v.at(p - 1) != '\\') return false;
-	else return !is_escaped(v, p - 1);
+    return (p == 0 || v.at(p - 1) != '\\') ? false : !is_escaped(v, p - 1);
 }

@@ -1,8 +1,8 @@
 /*Rana: a better syntax to markup*/
 
 #include <string>
-#include <cstdio>
-#include <cstdlib>
+#include <cstdio>	//file i/o
+#include <cstdlib>	//exit()
 #include <vector>
 #include "helper.h"
 
@@ -148,9 +148,9 @@ int parseArgs(int argc, char** argv) {
 		if (argv[i][0] != '-' && i != ignore) {
 			infile = argv[i];
 			ignore = -1;
-		}
 
-		else if (argfor != '\0') {
+		} else if (argfor != '\0') {
+
 			switch (argfor) {
 				case 'o':
 					outfile = argv[i];
@@ -161,36 +161,30 @@ int parseArgs(int argc, char** argv) {
 				default:
 					return WRONG_OPTION;
 			}
-
 			argfor = '\0';
-		}
 
-		else {
+		} else if (req_arg(argv[i][1])){
+			ignore = i + 1;
+			argfor = argv[i][1];
+			
+		} else
+			switch (argv[i][1]) {
+				case 'v':
+					printf("%s\n", VERSION);
+					return 0;
 
-			if (req_arg(argv[i][1])){
-				ignore = i + 1;
-				argfor = argv[i][1];
-			} else {
+				case 'h':
+					printf(help());
 
-				switch (argv[i][1]) {
-					case 'v':
-						printf("%s\n", VERSION);
-						return 0;
+					return 0;
 
-					case 'h':
-						printf(help());
-
-						return 0;
-
-					case 'l':
-						printf(license());
-						return 0;
-						
-					default:
-						return WRONG_OPTION;
-				}
+				case 'l':
+					printf(license());
+					return 0;
+					
+				default:
+					return WRONG_OPTION;
 			}
-		}
 	}
 	return 0;
 }
