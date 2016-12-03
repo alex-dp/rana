@@ -16,16 +16,15 @@ becomes:
 		<bird></bird>
 	</nest>
 
-you can escape parsing with double quotes (`"`)
+You can escape parsing with double quotes (`"`)
 
 () and {} are mandatory, but that will change.
 
-to compile and install, run `make && sudo make install`
+This package is available in the AUR as `rana-git`.
 
-a markup to rana parser is probably on its way.
+A markup to rana parser is probably on its way.
 
-Rana is released under the GNU GPLv3
-
+<br><br>
 Copyright (C) 2016 DP Development
 
 This program is free software: you can redistribute it and/or modify
