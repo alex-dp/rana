@@ -1,4 +1,4 @@
-pkgbase = rana
+pkgbase = rana-git
 	pkgdesc = A better syntax for SGML
 	pkgver = 1.0
 	pkgrel = 0
@@ -12,5 +12,5 @@ pkgbase = rana
 	md5sums = 0338aafc1549cf8bd7a2f1244bf40a05
 	md5sums = fefdd71b67679e5022f412da536392fd
 
-pkgname = rana
+pkgname = rana-git
 

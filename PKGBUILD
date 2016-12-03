@@ -1,5 +1,5 @@
 # Maintainer: Your Name <youremail@domain.com>
-pkgname=rana
+pkgname=aur-rana-git
 pkgver=1.0
 pkgrel=0
 pkgdesc="A better syntax for SGML"
@@ -21,12 +21,10 @@ source=("rana.cpp" "helper.h" "makefile")
 noextract=()
 
 build() {
-  cd "$pkgname"
   make
 }
 
 package() {
-  cd "$pkgname"
   sudo make install
 }
 
