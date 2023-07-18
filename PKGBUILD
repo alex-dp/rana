@@ -25,7 +25,7 @@ build() {
 }
 
 package() {
-  sudo make install
+  make install
 }
 
 md5sums=('dc0207309bec551f42e97ecab4a68af9'
